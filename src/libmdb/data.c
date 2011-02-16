@@ -924,7 +924,7 @@ char *mdb_col_to_string(MdbHandle *mdb, void *buf, int start, int datatype, int 
 					size, text, MDB_BIND_SIZE);
 			}
 		break;
-		case MDB_SDATETIME:
+		case MDB_DATETIME:
 			text = mdb_date_to_string(mdb, start);
 		break;
 		case MDB_MEMO:
@@ -966,7 +966,7 @@ int mdb_col_disp_size(MdbColumn *col)
 		case MDB_TEXT:
 			return col->col_size;
 		break;
-		case MDB_SDATETIME:
+		case MDB_DATETIME:
 			return 20;
 		break;
 		case MDB_MEMO:
@@ -1003,7 +1003,7 @@ int mdb_col_fixed_size(MdbColumn *col)
 		case MDB_TEXT:
 			return -1;
 		break;
-		case MDB_SDATETIME:
+		case MDB_DATETIME:
 			return 4;
 		break;
 		case MDB_BINARY:

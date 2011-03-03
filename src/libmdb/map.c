@@ -68,7 +68,7 @@ mdb_map_find_next1(MdbHandle *mdb, unsigned char *map, unsigned int map_sz, guin
 			continue;
 		}
 		if(mdb_read_alt_pg(mdb, map_pg) != mdb->fmt->pg_size) {
-			fprintf(stderr, "Oops! didn't get a full page at %d\n", map_pg);
+			mdb->fatal_error_handler("Oops! didn't get a full page at %d\n", map_pg);
 			exit(1);
 		} 
 
@@ -123,7 +123,7 @@ mdb_map_find_next_freepage(MdbTableDef *table, int row_size)
 			pgnum = mdb_alloc_page(table);
 			return pgnum;
 		} else if (pgnum==-1) {
-			fprintf(stderr, "Error: mdb_map_find_next_freepage error while reading maps.\n");
+			mdb->fatal_error_handler("Error: mdb_map_find_next_freepage error while reading maps.\n");
 			exit(1);
 		}
 		cur_pg = pgnum;

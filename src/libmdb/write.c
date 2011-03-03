@@ -555,7 +555,7 @@ mdb_insert_row(MdbTableDef *table, int num_fields, MdbField *fields)
 	}
 	mdb_debug(MDB_DEBUG_WRITE, "writing page %d", pgnum);
 	if (!mdb_write_pg(mdb, pgnum)) {
-		fprintf(stderr, "write failed! exiting...\n");
+		mdb->fatal_error_handler("write failed! exiting...\n");
 		exit(1);
 	}
 
@@ -746,7 +746,7 @@ int i, pos;
 	}
 	/* drum roll, please */
 	if (!mdb_write_pg(mdb, table->cur_phys_pg)) {
-		fprintf(stderr, "write failed! exiting...\n");
+		mdb->fatal_error_handler("write failed! exiting...\n");
 		exit(1);
 	}
 	return 0;

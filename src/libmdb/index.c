@@ -472,7 +472,7 @@ mdb_chain_add_page(MdbHandle *mdb, MdbIndexChain *chain, guint32 pg)
 
 	chain->cur_depth++;
 	if (chain->cur_depth > MDB_MAX_INDEX_DEPTH) {
-		fprintf(stderr,"Error! maximum index depth of %d exceeded.  This is probably due to a programming bug, If you are confident that your indexes really are this deep, adjust MDB_MAX_INDEX_DEPTH in mdbtools.h and recompile.\n", MDB_MAX_INDEX_DEPTH);
+		mdb->fatal_error_handler("Error! maximum index depth of %d exceeded.  This is probably due to a programming bug, If you are confident that your indexes really are this deep, adjust MDB_MAX_INDEX_DEPTH in mdbtools.h and recompile.\n", MDB_MAX_INDEX_DEPTH);
 		exit(1);
 	}
 	ipg = &(chain->pages[chain->cur_depth - 1]);

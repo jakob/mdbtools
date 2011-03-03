@@ -234,6 +234,7 @@ typedef struct {
 	iconv_t	iconv_in;
 	iconv_t	iconv_out;
 #endif
+	void (*fatal_error_handler)(char *fmt, ...);
 } MdbHandle; 
 
 typedef struct {

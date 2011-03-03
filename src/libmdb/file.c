@@ -17,6 +17,8 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#include <stdio.h>
+#include <stdarg.h>
 #include "mdbtools.h"
 
 #ifdef DMALLOC
@@ -156,6 +158,24 @@ static char *mdb_find_file(const char *file_name)
 	return NULL;
 }
 /**
+ * mdb_report_fatal_error:
+ * @fmt: a print-style format string
+ *
+ * This function writes an error message to stderr
+ * It is used as a default error handler when a fatal error occurs (eg. an incomplete mdb file)
+ * It is always called before an exit(1) call
+ * You could set mdb->fatal_error_handler to your own error handling function
+ **/
+void mdb_report_fatal_error(char *fmt, ...)
+{
+	va_list argp;
+	va_start(argp, fmt);
+	fprintf(stderr,"FATAL ERROR: ");
+	vfprintf(stderr, fmt, argp);
+	va_end(argp);
+}
+
+/**
  * mdb_open:
  * @filename: path to MDB (database) file
  * @flags: MDB_NOFLAGS for read-only, MDB_WRITABLE for read/write
@@ -174,6 +194,7 @@ MdbHandle *mdb_open(const char *filename, MdbFileFlags flags)
 	int open_flags;
 
 	mdb = (MdbHandle *) g_malloc0(sizeof(MdbHandle));
+	mdb->fatal_error_handler = &mdb_report_fatal_error;
 	mdb_set_default_backend(mdb, "access");
 #ifdef HAVE_ICONV
 	mdb->iconv_in = (iconv_t)-1;

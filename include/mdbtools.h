@@ -57,7 +57,9 @@ enum {
 };
 enum {
 	MDB_VER_JET3 = 0,
-	MDB_VER_JET4 = 1
+	MDB_VER_JET4 = 1,
+	MDB_VER_ACCDB_2007 = 0x02,
+	MDB_VER_ACCDB_2010 = 0x0103
 };
 enum {
 	MDB_FORM = 0,
@@ -152,7 +154,7 @@ enum {
 	MDB_IDX_REQUIRED = 0x08 
 };
 
-#define IS_JET4(mdb) (mdb->f->jet_version==MDB_VER_JET4)
+#define IS_JET4(mdb) (mdb->f->jet_version==MDB_VER_JET4 || mdb->f->jet_version==MDB_VER_ACCDB_2007 || mdb->f->jet_version==MDB_VER_ACCDB_2010)
 #define IS_JET3(mdb) (mdb->f->jet_version==MDB_VER_JET3)
 
 /* forward declarations */

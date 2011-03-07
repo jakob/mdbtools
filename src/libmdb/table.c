@@ -253,6 +253,7 @@ GPtrArray *mdb_read_columns(MdbTableDef *table)
 		pcol->is_fixed = col[fmt->col_flags_offset] & 0x01 ? 1 : 0;
 		pcol->is_long_auto = col[fmt->col_flags_offset] & 0x04 ? 1 : 0;
 		pcol->is_uuid_auto = col[fmt->col_flags_offset] & 0x40 ? 1 : 0;
+		pcol->col_flags = col[fmt->col_flags_offset];
 
 		// tab_col_offset_fixed == 14 or 21
 		pcol->fixed_offset = mdb_get_int16(col, fmt->tab_col_offset_fixed);

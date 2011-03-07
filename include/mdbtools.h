@@ -293,6 +293,7 @@ typedef struct {
 	/* row_col_num is the row column number order, 
 	 * including deleted columns */
 	int		row_col_num;
+	int col_flags;
 } MdbColumn;
 
 struct mdbsargtree {

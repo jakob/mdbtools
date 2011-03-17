@@ -45,7 +45,7 @@
 #define MDB_MAX_IDX_COLS 10
 #define MDB_CATALOG_PG 18
 #define MDB_MEMO_OVERHEAD 12
-#define MDB_BIND_SIZE 16384
+#define MDB_BIND_SIZE 200000
 
 enum {
 	MDB_PAGE_DB = 0,

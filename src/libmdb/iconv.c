@@ -65,18 +65,21 @@ mdb_unicode2ascii(MdbHandle *mdb, char *src, size_t slen, char *dest, size_t dle
 	in_ptr = (tmp) ? tmp : src;
 	out_ptr = dest;
 	len_in = (tmp) ? tlen : slen;
-	len_out = dlen;
+	len_out = dlen-1;
 
 #if HAVE_ICONV
 	//printf("1 len_in %d len_out %d\n",len_in, len_out);
 	while (1) {
 		iconv(mdb->iconv_in, &in_ptr, &len_in, &out_ptr, &len_out);
-		if ((!len_in) || (errno == E2BIG)) break;
-		/* Don't bail if impossible conversion is encountered */
-		in_ptr += (IS_JET4(mdb)) ? 2 : 1;
-		len_in -= (IS_JET4(mdb)) ? 2 : 1;
-		*out_ptr++ = '?';
-		len_out--;
+		/* retry if there still are input bytes and output bytes left */
+		if (len_out && len_in && (errno==EILSEQ || errno==EINVAL)) {
+			in_ptr += (IS_JET4(mdb)) ? 2 : 1;
+			len_in -= (IS_JET4(mdb)) ? 2 : 1;
+			*out_ptr++ = '?';
+			len_out--;
+		} else {
+			break;
+		}
 	}
 	//printf("2 len_in %d len_out %d\n",len_in, len_out);
 	dlen -= len_out;
@@ -84,7 +87,7 @@ mdb_unicode2ascii(MdbHandle *mdb, char *src, size_t slen, char *dest, size_t dle
 	if (IS_JET3(mdb)) {
                size_t copy_len = len_in;
                if (copy_len > dlen)
-                       copy_len = dlen;
+                       copy_len = dlen-1;
                strncpy(out_ptr, in_ptr, copy_len);
                dlen = copy_len;
 	} else {
@@ -97,7 +100,7 @@ mdb_unicode2ascii(MdbHandle *mdb, char *src, size_t slen, char *dest, size_t dle
 #endif
 
 	if (tmp) g_free(tmp);
-	dest[dlen]='\0';
+	dest[dlen-1]='\0';
 	//printf("dest %s\n",dest);
 	return dlen;
 }

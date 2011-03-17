@@ -675,7 +675,7 @@ static char *mdb_memo_to_string(MdbHandle *mdb, int start, int size)
 	gint32 row_start, pg_row;
 	size_t len;
 	void *buf, *pg_buf = mdb->pg_buf;
-	char *text = (char *) g_malloc(MDB_BIND_SIZE);
+	char *text = (char *) g_malloc(MDB_BIND_SIZE+1);
 
 	if (size<MDB_MEMO_OVERHEAD) {
 		strcpy(text, "");
